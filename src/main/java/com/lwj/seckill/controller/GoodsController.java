@@ -2,9 +2,7 @@ package com.lwj.seckill.controller;
 
 import com.lwj.seckill.pojo.User;
 import com.lwj.seckill.service.IGoodsService;
-import com.lwj.seckill.vo.DetailVo;
 import com.lwj.seckill.vo.GoodsVo;
-import com.lwj.seckill.vo.RespBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -68,15 +66,14 @@ public class GoodsController {
      * @param goodsId
      * @return
      */
-    @RequestMapping(value="/toDetail/{goodsId}",produces = "text/html;charset=utf-8")
-    @ResponseBody
+    @RequestMapping(value="/toDetail/{goodsId}")
     public String toDetail(Model model,User user,@PathVariable("goodsId") Long goodsId,
                            HttpServletRequest request,HttpServletResponse response){
-        ValueOperations valueOperations = redisTemplate.opsForValue();
-        String html = (String) valueOperations.get("goodsDetail:" + goodsId);
-        if(!StringUtils.isEmpty(html)){
-            return html;
-        }
+//        ValueOperations valueOperations = redisTemplate.opsForValue();
+//        String html = (String) valueOperations.get("goodsDetail:" + goodsId);
+//        if(!StringUtils.isEmpty(html)){
+//            return html;
+//        }
         if(null == user){
             return "login";
         }
@@ -105,53 +102,53 @@ public class GoodsController {
         model.addAttribute("user",user);
         model.addAttribute("goodsList",goodsService.findGoodsVo());
         model.addAttribute("goods",goodsVo);
-        WebContext webContext = new WebContext(request, response, request.getServletContext(),
-                request.getLocale(), model.asMap());
-        html = thymeleafViewResolver.getTemplateEngine().process("goodsDetail",webContext);
-        if(!StringUtils.isEmpty(html)){
-            valueOperations.set("goodsDetail"+goodsId,html,60,TimeUnit.SECONDS);
-        }
-        return html;
+//        WebContext webContext = new WebContext(request, response, request.getServletContext(),
+//                request.getLocale(), model.asMap());
+//        html = thymeleafViewResolver.getTemplateEngine().process("goodsDetail",webContext);
+//        if(!StringUtils.isEmpty(html)){
+//            valueOperations.set("goodsDetail"+goodsId,html,60,TimeUnit.SECONDS);
+//        }
+        return "goodsDetail";
     }
-    /**
-     * 跳转商品详情页
-     * @param goodsId
-     * @return
-     */
-    @RequestMapping("/detail/{goodsId}")
-    @ResponseBody
-    public RespBean toDetail2(Model model, User user, @PathVariable("goodsId") Long goodsId,
-                              HttpServletRequest request, HttpServletResponse response){
-        GoodsVo goodsVo = goodsService.findGoodsVoByGoodsId(goodsId);
-        Date startDate = goodsVo.getStartDate();
-        Date endDate = goodsVo.getEndDate();
-        Date nowDate = new Date();
-        //秒杀状态
-        int secKillStatus = 0;
-        //秒杀倒计时
-        int remainSeconds = 0;
-        //秒杀还未开始
-        if(nowDate.before(startDate)){
-            remainSeconds = (int)((startDate.getTime()-nowDate.getTime())/1000);
-        }else if(nowDate.after(endDate)){
-            //秒杀已经结束
-            secKillStatus=2;
-            remainSeconds =-1;
-        }else {
-            //秒杀中
-            secKillStatus =1;
-            remainSeconds=0;
-        }
-        model.addAttribute("remainSeconds",remainSeconds);
-        model.addAttribute("secKillStatus",secKillStatus);
-        model.addAttribute("user",user);
-        model.addAttribute("goodsList",goodsService.findGoodsVo());
-        model.addAttribute("goods",goodsVo);
-        DetailVo detailVo = new DetailVo();
-        detailVo.setUser(user);
-        detailVo.setGoodsVo(goodsVo);
-        detailVo.setSecKillStatus(secKillStatus);
-        detailVo.setRemainSeconds(remainSeconds);
-        return null;
-    }
+//    /**
+//     * 跳转商品详情页
+//     * @param goodsId
+//     * @return
+//     */
+//    @RequestMapping("/detail/{goodsId}")
+//    @ResponseBody
+//    public RespBean toDetail2(Model model, User user, @PathVariable("goodsId") Long goodsId,
+//                              HttpServletRequest request, HttpServletResponse response){
+//        GoodsVo goodsVo = goodsService.findGoodsVoByGoodsId(goodsId);
+//        Date startDate = goodsVo.getStartDate();
+//        Date endDate = goodsVo.getEndDate();
+//        Date nowDate = new Date();
+//        //秒杀状态
+//        int secKillStatus = 0;
+//        //秒杀倒计时
+//        int remainSeconds = 0;
+//        //秒杀还未开始
+//        if(nowDate.before(startDate)){
+//            remainSeconds = (int)((startDate.getTime()-nowDate.getTime())/1000);
+//        }else if(nowDate.after(endDate)){
+//            //秒杀已经结束
+//            secKillStatus=2;
+//            remainSeconds =-1;
+//        }else {
+//            //秒杀中
+//            secKillStatus =1;
+//            remainSeconds=0;
+//        }
+//        model.addAttribute("remainSeconds",remainSeconds);
+//        model.addAttribute("secKillStatus",secKillStatus);
+//        model.addAttribute("user",user);
+//        model.addAttribute("goodsList",goodsService.findGoodsVo());
+//        model.addAttribute("goods",goodsVo);
+//        DetailVo detailVo = new DetailVo();
+//        detailVo.setUser(user);
+//        detailVo.setGoodsVo(goodsVo);
+//        detailVo.setSecKillStatus(secKillStatus);
+//        detailVo.setRemainSeconds(remainSeconds);
+//        return null;
+//    }
 }
