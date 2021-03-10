@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <!--common.js-->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="panel panel-default">
+    <div class="panel-heading">秒杀订单详情</div>
+    <table class="table" id="order">
+        <tr>
+            <td>商品名称</td>
+            <td th:text="${goods.goodsName}" colspan="3"></td>
+        </tr>
+        <tr>
+            <td>商品图片</td>
+            <td colspan="2"><img th:src="@{${goods.goodsImg}}" th:width="100" height="200"></td>
+        </tr>
+        <tr>
+            <td>下单时间</td>
+            <td th:text="${#dates.format(order.createDate,'yyyy-MM-dd HH:mm:ss')}" colspan="2"></td>
+        </tr>
+        <tr>
+            <td>订单状态</td>
+            <td>
+                <span th:if="${order.status eq 0}">未支付</span>
+                <span th:if="${order.status eq 1}">待发货</span>
+                <span th:if="${order.status eq 2}">已发货</span>
+                <span th:if="${order.status eq 3}">已收货</span>
+                <span th:if="${order.status eq 4}">已退款</span>
+                <span th:if="${order.status eq 5}">已完成</span>
+            </td>
+            <td>
+                <button class="btn btn-primary btn-block" type="submit" id="payButton">立即支付</button>
+            </td>
+        </tr>
+        <tr>
+            <td>收货人</td>
+            <td colspan="2">xxx 18849999</td>
+        </tr>
+        <tr>
+            <td>收货地址</td>
+            <td colspan="2">黑龙江</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

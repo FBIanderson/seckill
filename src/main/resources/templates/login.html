@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <!--common.js-->
+    <script type="text/javascript" th:src="@{/js/common.js}"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<form name="loginForm" id="loginForm" method="post" style="width:50%;margin:0 auto">
+    <h2 style="text-align: center;margin-bottom: 20px">用户登陆</h2>
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-4">请输入手机号码</label>
+            <div class="col-md-5">
+                <input id="mobile" name="mobile" class="form-control" type="text" placeholder="手机号码" required="true"
+                minlength="11" max="11"/>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="form-label col-md-4">请输入密码</label>
+            <div class="col-md-5">
+                <input id="password" name="password" class="form-control" type="password" placeholer="密码"
+                       required="true" minlength="6" maxlength="16"/>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5">
+            <button class="btn btn-primary btn-block" type="reset" onclick="reset()">重置</button>
+        </div>
+        <div class="col-md-5">
+            <button class="btn btn-primary btn-block" type="submit" onclick="login()">登陆</button>
+        </div>
+    </div>
+</form>
+
+</body>
+<script>
+    function login(){
+        console.log("到了login");
+        doLogin();
+        // $("#loginForm").validate({
+        //     submitHandler:function (form) {
+        //         doLogin();
+        //     }
+        // })
+    }
+    function doLogin(){
+        console.log("到了doLogin()");
+        // g_showloading();
+        var inputPass = $("#password").val();
+        // var salt = g_password_salt;
+        // var password = "" + salt.charAt(0) + salt.charAt(2) + inputPass + salt.charAt(5) + salt.charAt(4);
+        var password = inputPass;
+        $.ajax({
+            url:"/login/doLogin",
+            type:"POST",
+            data:{
+                mobile:$("#mobile").val(),
+                password: password
+            },
+            success: function (data){
+                // layer.closeAll();
+                if(data.code===200){
+                    alert("成功");
+                    window.location.href="/goods/toList";
+                    // layer.msg("成功");
+                }else{
+                    alert("失败");
+                    // layer.msg(data.message);
+                }
+            },
+            error: function (){
+                alert("error");
+                // layer.closeAll();
+        }
+        });
+    }
+</script>
+</html>
