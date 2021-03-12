@@ -41,6 +41,7 @@ public class SeckillController {
         }
         model.addAttribute("user",user);
         GoodsVo goodsVo = goodsService.findGoodsVoByGoodsId(goodsId);
+        //判断库存
         if(goodsVo.getStockCount()<1){
             model.addAttribute("errmsg", RespBeanEnum.EMPTY_STOCK.getMessage());
             return "secKillFail";

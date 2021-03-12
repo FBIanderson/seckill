@@ -29,24 +29,24 @@ public class UserUtil {
             users.add(user);
         }
         System.out.println("create user");
-        //插入数据库
-        Connection conn = getConn();
-        String sql = "insert into t_user(login_count,nickname,register_date,salt,password,id) values(?,?,?,?,?,?)";
-        PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        for(int i=0;i< users.size();++i){
-            User user = users.get(i);
-            preparedStatement.setInt(1,user.getLoginCount());
-            preparedStatement.setString(2,user.getNickname());
-            preparedStatement.setTimestamp(3,new Timestamp(user.getRegisterDate().getTime()));
-            preparedStatement.setString(4,user.getSalt());
-            preparedStatement.setString(5,user.getPassword());
-            preparedStatement.setLong(6,user.getId());
-            preparedStatement.addBatch();
-        }
-        preparedStatement.executeBatch();
-        preparedStatement.clearParameters();
-        conn.close();
-        System.out.println("insert to db");
+//        //插入数据库
+//        Connection conn = getConn();
+//        String sql = "insert into t_user(login_count,nickname,register_date,salt,password,id) values(?,?,?,?,?,?)";
+//        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+//        for(int i=0;i< users.size();++i){
+//            User user = users.get(i);
+//            preparedStatement.setInt(1,user.getLoginCount());
+//            preparedStatement.setString(2,user.getNickname());
+//            preparedStatement.setTimestamp(3,new Timestamp(user.getRegisterDate().getTime()));
+//            preparedStatement.setString(4,user.getSalt());
+//            preparedStatement.setString(5,user.getPassword());
+//            preparedStatement.setLong(6,user.getId());
+//            preparedStatement.addBatch();
+//        }
+//        preparedStatement.executeBatch();
+//        preparedStatement.clearParameters();
+//        conn.close();
+//        System.out.println("insert to db");
         //登陆，生成UserTicket
         String urlString = "http://localhost:8080/login/doLogin";
         File file = new File("F:\\config.txt");
