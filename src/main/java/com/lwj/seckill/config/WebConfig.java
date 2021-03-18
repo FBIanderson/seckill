@@ -18,6 +18,11 @@ public class WebConfig implements WebMvcConfigurer {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(userArgumentResolver);
     }
+
+    /**
+     * 不加的话会找不到静态资源!!!!!!
+     * @param registry
+     */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
        registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
